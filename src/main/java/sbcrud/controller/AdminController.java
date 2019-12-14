@@ -33,7 +33,9 @@ public class AdminController {
     @GetMapping(value = "/list")
     public String allUsers(Model model) {
         List<User> users = userService.getAllUsers();
+        List<Role> roles = roleService.getAllRoles();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("roles", roles);
         model.addAttribute("currentUser", user);
         model.addAttribute("users", users);
         return "list-page";

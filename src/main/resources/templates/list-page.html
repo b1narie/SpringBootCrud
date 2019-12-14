@@ -56,7 +56,6 @@
                         <!--table-->
                         <div class="tab-pane fade show active" id="users">
                             <table class="table table-striped border">
-
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
@@ -66,7 +65,6 @@
                                     <th></th>
                                     <th></th>
                                 </tr>
-
                                 <tr th:each="user : ${users}">
                                     <td th:text="${user.id}"></td>
                                     <td th:text="${user.name}"></td>
@@ -111,7 +109,11 @@
                                                         </div>
                                                         <div class="form-group w-50 m-auto">
                                                             <label th:for="'role' + ${user.id}" class="col-form-label">Role</label>
-                                                            <input th:each="role : ${user.roles}" th:value="${role.role}" name="role" class="form-control">
+                                                            <select name="role" class="form-control">
+                                                                <div th:each="role : ${roles}">
+                                                                    <option th:value="${role.role}" th:text="${role.role}" th:selected="${user.roles.contains(role)}"></option>
+                                                                </div>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -133,6 +135,7 @@
                             </table>
                         </div>
                         <!--end of table-->
+                        <!-- add user -->
                         <div class="tab-pane fade show" id="addUser">
                             <form th:action="@{/admin/add}" method="post">
                                 <div class="form-group w-25 m-auto p-auto">
@@ -149,7 +152,9 @@
                                 </div>
                                 <div class="form-group w-25 m-auto p-auto">
                                     <label for="InputName">Role</label>
-                                    <input type="text" class="form-control" id="role" name="role" placeholder="Role">
+                                    <select name="role" class="form-control">
+                                        <option th:each="role : ${roles}" th:value="${role.role}" th:text="${role.role}"></option>
+                                    </select>
                                 </div>
                                 <div class="form-group w-25 m-auto p-auto">
                                     <button type="submit" class="btn btn-success my-3">Add new User</button>
