@@ -1,6 +1,7 @@
 package sbcrud.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/admin/")
+@RequestMapping("/admin")
 public class AdminController {
 
     private UserService userService;
@@ -32,18 +33,13 @@ public class AdminController {
     @GetMapping(value = "/list")
     public String allUsers(Model model) {
         List<User> users = userService.getAllUsers();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("currentUser", user);
         model.addAttribute("users", users);
         return "list-page";
     }
 
-    @GetMapping(value = "/edit/{id}")
-    public String getEditPage(@PathVariable("id") Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "edit-user-form";
-    }
-
-    @PostMapping(value = "/edit")
+    @PostMapping(value = "/edit/")
     public String editUser(@ModelAttribute("user") User user,
                            @RequestParam("role") String role) {
         Set<Role> roles = new HashSet<>();
@@ -52,11 +48,6 @@ public class AdminController {
         user.setRoles(roles);
         userService.updateUser(user);
         return "redirect:/admin/list";
-    }
-
-    @GetMapping(value = "/add")
-    public String getAddPage() {
-        return "add-user-form";
     }
 
     @PostMapping(value = "/add")
