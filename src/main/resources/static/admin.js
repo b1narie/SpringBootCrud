@@ -10,18 +10,17 @@ function buildTable() {
         url: "/rest/users",
         contentType: "application/json",
         success: function (data) {
-            var users = JSON.parse(JSON.stringify(data));
             console.log(data);
-            for (var i in users) {
+            for (var i in data) {
                 $("#tableBody").append(
                     "<tr>" +
-                    "<td>" + users[i].id + "</td>" +
-                    "<td>" + users[i].name + "</td>" +
-                    "<td>" + users[i].login + "</td>" +
-                    "<td>" + users[i].password + "</td>" +
-                    "<td>" + getUserRoles(users[i].roles) + "</td>" +
-                    "<td><button onclick='openEditForm(" + users[i].id + ")' type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#editModal\">Edit</button></td>" +
-                    "<td><button onclick='deleteUser(" + users[i].id +")' class=\"btn btn-primary\">Delete</button></td>" +
+                    "<td>" + data[i].id + "</td>" +
+                    "<td>" + data[i].name + "</td>" +
+                    "<td>" + data[i].login + "</td>" +
+                    "<td>" + data[i].password + "</td>" +
+                    "<td>" + getUserRoles(data[i].roles) + "</td>" +
+                    "<td><button onclick='openEditForm(" + data[i].id + ")' type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#editModal\">Edit</button></td>" +
+                    "<td><button onclick='deleteUser(" + data[i].id +")' class=\"btn btn-primary\">Delete</button></td>" +
                     "</tr>"
                 );
             }
